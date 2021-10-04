@@ -1,0 +1,10 @@
+This app helps you save corresponding password, email, and usernames of social media in a local databasefile, with the passwords being encrypted using the "Cryptography" library for python
+App runs without terminal (Hence the extension .pyw)
+App automatically downloads needed libraries in the background on first launch
+App is written with Python 3.x (specifcally Python 3.9.7)
+
+Libraries used :
+  -Tkinter (GUI library. Installed by default with python)
+  -OS (A library that helps you access operating system commands, such as cmd and terminal. Installed by default with python)
+  -SQLite3 (A library that helps you create and manage local .db files. Installed by default with python)
+  -Cryptography (A library that dycrypts strings using bytes and arrays. Installed using "pip install cryptography")
