@@ -2,6 +2,7 @@ This app helps you save corresponding password, email, and usernames of social m
 App runs without terminal (Hence the extension .pyw)
 App automatically downloads needed libraries in the background on first launch
 App is written with Python 3.x (specifcally Python 3.9.7)
+App was then transformed into a .exe file using pyinstaller
 
 Libraries used :
   -Tkinter (GUI library. Installed by default with python)
