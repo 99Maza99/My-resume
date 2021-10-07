@@ -65,7 +65,7 @@ async def main():
             userid = record[1]
             channel = await client.fetch_user(userid)
             embedVar = discord.Embed(title="Daily alarm !!", description="Your daily alarm", color=0x00ff00)
-            embedVar.add_field(name=record[1], value=record[3], inline=False)
+            embedVar.add_field(name=record[2], value=record[4], inline=False)
             await channel.send(embed=embedVar)
             print("Sent to user " + record[0])
 
