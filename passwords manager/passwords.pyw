@@ -9,7 +9,6 @@ from tkinter import messagebox
 from tkinter import ttk
 
 
-
 ###Imports cryptography, and downloads it if is not exitent
 try :
     from cryptography import fernet
@@ -23,53 +22,24 @@ except:
 ###Has __init__ function that make sure that the key, and database are created.
 class Startup :
     def __init__(self):
-        if os.path.isfile('C:\Program Files\passwords\key.key'):
-            print (os.path.isfile('C:\Program Files\passwords\key.key'))
-            if os.path.isfile('C:\Program Files\passwords\key.key'):
-                file = open('C:\Program Files\passwords\key.key','rb')
-                self.key = file.read()
-            
-            else :
-                self.key = Fernet.generate_key()
-                os.makedirs('C:\Program Files\passwords')
-                file = open('C:\Program Files\passwords\key.key','wb')
-                file.write(self.key)
-                print("Created key")
+        if os.path.isfile('./key.key') is True :
+            file = open('key.key','rb')
+            self.key = file.read()
 
-
-                
-            if os.path.isfile('C:\Program Files\passwords\Data.db') :
-                return
-
-            else :    
-                conn = sqlite3.connect('C:\Program Files\passwords\Data.db')
-                c = conn.cursor()
-                c.execute("""CREATE IF NOT EXISTS TABLE Passwords
-                (type text NOT NULL,
-                desc text,
-                email text NOT NULL,
-                user text NOT NULL,
-                password blob NOT NULL)""")
-                conn.commit()
-                conn.close()
-            
-            
         else :
-            print(os.path.isfile('C:\Program Files\passwords\key.key'))
             self.key = Fernet.generate_key()
-            os.makedirs('C:\Program Files\passwords')
-            file = open('C:\Program Files\passwords\key.key','wb')
+            file = open('key.key','wb')
             file.write(self.key)
             print("Created key")
 
-
-            
-            if os.path.isfile('C:\Program Files\passwords\Data.db') :
+        if os.path.isfile('./Data.db') is True :
+            conn = sqlite3.connect('Data.db')
+            c = conn.cursor()
+            c.execute("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='Passwords';")
+            if c.fetchone()[0] == 1 :
                 return
-
+            
             else :
-                conn = sqlite3.connect('C:\Program Files\passwords\Data.db')
-                c = conn.cursor()    
                 c.execute("""CREATE TABLE Passwords
                 (type text NOT NULL,
                 desc text,
@@ -79,10 +49,21 @@ class Startup :
                 conn.commit()
                 conn.close()
         
+        else :
+            conn = sqlite3.connect('Data.db')
+            c = conn.cursor()
+            c.execute("""CREATE TABLE Passwords (
+            type text NOT NULL,
+            desc text,
+            email text NOT NULL,
+            user text NOT NULL,
+            password blob NOT NULL)""")
+            conn.commit()
+            conn.close()
         
         
     def GetKey() :
-            file = open('C:\Program Files\passwords\key.key','rb')
+            file = open('key.key','rb')
             key = file.read()
             return key
 
@@ -114,7 +95,7 @@ class Functions :
         Passwordentry.delete(0,END)
     ###Refreshes the treeview
     def refresh(e):
-        conn = sqlite3.connect('C:\Program Files\passwords\Data.db')
+        conn = sqlite3.connect('Data.db')
         c = conn.cursor()
 
         try :
@@ -137,7 +118,7 @@ class Functions :
     ###Copy the password into clipboard
     def copy(e,data):
         values = Functions.getval("id")
-        conn = sqlite3.connect("C:\Program Files\passwords\Data.db")
+        conn = sqlite3.connect("Data.db")
         c = conn.cursor()
         root.clipboard_clear()
         key = Startup.GetKey()
@@ -169,7 +150,7 @@ class Functions :
             return
     ###Add a record into database
     def addrecord(e):
-        conn = sqlite3.connect("C:\Program Files\passwords\Data.db")
+        conn = sqlite3.connect("Data.db")
         key = Startup.GetKey()
         c = conn.cursor()
         encryptedpassword = Encrypt.do(key,Passwordentry.get())
@@ -205,7 +186,7 @@ class Functions :
         values = Functions.getval("update")
         key = Startup.GetKey()        
         
-        conn = sqlite3.connect("C:\Program Files\passwords\Data.db")
+        conn = sqlite3.connect("Data.db")
         c = conn.cursor()
         c.execute("SELECT password FROM Passwords WHERE rowid = ?",[values[5]])
         password = c.fetchone()
@@ -231,7 +212,7 @@ class Functions :
     ###Deletes a record from the database
     def deleterecord(e):
         row = Functions.getval("id")
-        conn = sqlite3.connect("C:\Program Files\passwords\Data.db")
+        conn = sqlite3.connect("Data.db")
         c = conn.cursor()
     
         c.execute("""DELETE FROM Passwords WHERE rowid = ?""",[row])
