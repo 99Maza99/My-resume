@@ -9,3 +9,9 @@ Libraries used :
   -OS (A library that helps you access operating system commands, such as cmd and terminal. Installed by default with python)
   -SQLite3 (A library that helps you create and manage local .db files. Installed by default with python)
   -Cryptography (A library that dycrypts strings using bytes and arrays. Installed using "pip install cryptography")
+  
+  Using the .exr :
+    -You'll have to run app as administrator only for the first time to create the background files
+    -That is done, by right clicking the app
+    -Then click run as administrator
+    -It is manditory for first run ONLY
