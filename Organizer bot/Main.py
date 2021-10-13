@@ -53,11 +53,9 @@ async def on_ready():
 
 @tasks.loop(seconds=60)
 async def main():
-    print("1 minute")
     e = datetime.datetime.now(timezone)
     current = str(e.hour)+":"+str(e.minute)+":00"
     time = datetime.datetime.strptime(current,'%H:%M:%S').time()
-    print(time)
     c.execute(f"""SELECT * FROM records WHERE alarm = '{time}'""")
     data = c.fetchall()
     if data != [] :
